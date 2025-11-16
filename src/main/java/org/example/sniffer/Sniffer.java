@@ -1,5 +1,7 @@
 package org.example.sniffer;
 
+import org.example.model.PacketInfo;
+import org.example.parser.PacketParser;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.Packet;
 
@@ -39,12 +41,13 @@ public class Sniffer {
         );
 
         System.out.println("Sniffer started. Listening on " + interfaceName + "...");
-
+        PacketParser parser = new PacketParser();
         // Capture loop
         while (true) {
             Packet packet = handle.getNextPacket();
             if (packet != null) {
-                System.out.println("📦 Packet: " + packet);
+                PacketInfo packetInfo = parser.parse(packet);
+                System.out.println(packetInfo.toString());
             }
         }
     }
